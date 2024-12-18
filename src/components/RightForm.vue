@@ -9,9 +9,9 @@
               v-for="(dragon, index) in dragonList"
               :key="index"
               :value="index"
-              :label="dragon.speciesDisplay"
+              :label="$t(`dragon.${dragon.speciesDisplay}`)"
               />
-              <!-- :label="$t(`dragon.${dragon.speciesDisplay}`)" -->
+              <!-- :label="dragon.speciesDisplay" -->
           </el-select>
           <el-button type="primary" @click="handleDragonGtClick">&gt;</el-button>
         </div>
@@ -131,7 +131,6 @@ watch(
 )
 
 function resetForm() {
-  console.log('reset')
   formData.value.forms = 0
   formData.value.genders = 0
   formData.value.stage = 0

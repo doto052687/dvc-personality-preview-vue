@@ -14,10 +14,9 @@
               v-for="(item, index) in personalityList"
               :key="index"
               :value="index"
-              :label="item.name"
-              >
-              
-              <!-- :label="$t(`personality.${item.name}`)" -->
+              :label="$t(`personality.${item.name}`)"
+            >
+              <!-- :label="item.name" -->
             </el-option>
           </el-select>
           <el-button type="primary" @click="handlePersonalityGtClick">&gt;</el-button>

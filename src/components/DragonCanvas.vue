@@ -24,9 +24,11 @@
 <script setup lang="ts">
 import { SpineObject } from '@/utils/spineObject'
 import { SpineCanvas } from '@esotericsoftware/spine-webgl'
-import { onMounted, ref } from 'vue'
 import { useCanvasStore } from '@/stores/canvas'
+// import { MutationType } from 'pinia'
+
 import _ from 'lodash'
+import { onMounted, ref, watch } from 'vue'
 const canvasStore = useCanvasStore()
 const baseResPath = 'https://doto052687.github.io/Personality-Sneak-Peek-Expanded/'
 const canvases = ref<{
@@ -45,31 +47,36 @@ const canvases = ref<{
 onMounted(() => {
   setInitialDragonCanvas()
 })
-
+watch(() => canvasStore.$state['backAura'], _.debounce(setBackAuraCanvas, 1000))
+watch(() => canvasStore.$state['dragon'], _.debounce(setDragonCanvas, 1000))
+watch(() => canvasStore.$state['background'], _.debounce(setCaveBgCanvas, 1000))
+watch(() => canvasStore.$state['floor'], _.debounce(setFloorCanvas, 1000))
+watch(() => canvasStore.$state['frontAura'], _.debounce(setFrontAuraCanvas, 1000))
 // add debounce when change canvas
-canvasStore.$subscribe(
-  _.debounce((mutation, state) => {
-    const event = mutation.events as any
-    switch (event.key) {
-      case 'backAura':
-      case 'frontAura':
-        setBackAuraCanvas()
-        setFrontAuraCanvas()
-        break
-      case 'background':
-        setCaveBgCanvas()
-        break
-      case 'dragon':
-        setDragonCanvas()
-        break
-      case 'floor':
-        setFloorCanvas()
-        break
-      default:
-        break
-    }
-  }, 500),
-)
+// canvasStore.$subscribe(
+//   _.debounce((mutation, state) => {
+//     console.log(mutation)
+//     const event = mutation.events as any
+//     switch (event.key) {
+//       case 'backAura':
+//       case 'frontAura':
+//         setBackAuraCanvas()
+//         setFrontAuraCanvas()
+//         break
+//       case 'background':
+//         setCaveBgCanvas()
+//         break
+//       case 'dragon':
+//         setDragonCanvas()
+//         break
+//       case 'floor':
+//         setFloorCanvas()
+//         break
+//       default:
+//         break
+//     }
+//   }, 500),
+// )
 
 function setInitialDragonCanvas() {
   const dragonCanvasElem = document.getElementById('dragonCanvas') as HTMLCanvasElement
