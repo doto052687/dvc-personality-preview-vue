@@ -50,6 +50,7 @@ onMounted(() => {
 canvasStore.$subscribe(
   _.debounce((mutation, state) => {
     const event = mutation.events as any
+    console.log(event)
     switch (event.key) {
       case 'backAura':
       case 'frontAura':
