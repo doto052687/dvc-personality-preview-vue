@@ -8,9 +8,10 @@
             <el-option
               v-for="(dragon, index) in dragonList"
               :key="index"
-              :label="$t(`dragon.${dragon.speciesDisplay}`)"
               :value="index"
-            />
+              :label="dragon.speciesDisplay"
+              />
+              <!-- :label="$t(`dragon.${dragon.speciesDisplay}`)" -->
           </el-select>
           <el-button type="primary" @click="handleDragonGtClick">&gt;</el-button>
         </div>
@@ -30,17 +31,17 @@
           <el-radio v-for="(item, index) in genderList" :key="index" :value="index">
             <img
               v-if="item.name == 'm'"
-              src="../../res/img/gender_m_0201.png"
+              src="@pspe/res/img/gender_m_0201.png"
               alt="male selection"
             />
             <img
               v-else-if="item.name == 'f'"
-              src="../../res/img/gender_f_0201.png"
+              src="@pspe/res/img/gender_f_0201.png"
               alt="female selection"
             />
             <img
               v-else-if="item.name == 'n'"
-              src="../../res/img/gender_n_0201.png"
+              src="@pspe/res/img/gender_n_0201.png"
               alt="neutral selection"
             />
             <div v-else>{{ item.name }}</div>
@@ -52,22 +53,22 @@
           <el-radio v-for="(item, index) in stageList" :key="index" :value="index">
             <img
               v-if="item.name == 'hatch'"
-              src="../../res/img/stage_hatch.png"
+              src="@pspe/res/img/stage_hatch.png"
               alt="hatch selection"
             />
             <img
               v-else-if="item.name == 'hatchling'"
-              src="../../res/img/stage_hatchling.png"
+              src="@pspe/res/img/stage_hatchling.png"
               alt="hatchling selection"
             />
             <img
               v-else-if="item.name == 'adult'"
-              src="../../res/img/stage_adult.png"
+              src="@pspe/res/img/stage_adult.png"
               alt="adult selection"
             />
             <img
               v-else-if="item.name == 'essence'"
-              src="../../res/img/stage_essence.png"
+              src="@pspe/res/img/stage_essence.png"
               alt="essence selection"
             />
             <div v-else>{{ item.name }}</div>
@@ -163,13 +164,13 @@ function getEssenceUrl() {
   const gender = genderList.value[formData.value.genders].name
   const stage = stageList.value[formData.value.stage].name
   const colorName = genderList.value[formData.value.genders].color
-  return `./res/spine/character/dragon/essence/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}`
+  return `res/spine/character/dragon/essence/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}`
 }
 
 function getUndeadUrl() {
   const undeadres = genderList.value[formData.value.genders].undeadres
 
-  return `./res/spine/character/dragon/undead/undead_${undeadres}/undead_${undeadres}`
+  return `res/spine/character/dragon/undead/undead_${undeadres}/undead_${undeadres}`
 }
 
 function getDefaultUrl() {
@@ -178,7 +179,7 @@ function getDefaultUrl() {
   const gender = genderList.value[formData.value.genders].name
   const stage = stageList.value[formData.value.stage].name
   const colorName = genderList.value[formData.value.genders].color
-  return `./res/spine/character/dragon/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}`
+  return `res/spine/character/dragon/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}/${speciesName}_${formNumber}_${gender}_${stage}_${colorName}`
 }
 
 function handleDragonLtClick() {

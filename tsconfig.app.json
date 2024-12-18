@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue","dict/*.js"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue","src/module/Personality-Sneak-Peek-Expanded/dict/*.js", "src/module/Personality-Sneak-Peek-Expanded/js/*.js"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
@@ -9,7 +9,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      // "@res/*": ["./res/*"]
+      "@pspe/*": ["./src/module/Personality-Sneak-Peek-Expanded/*"]
     }
   }
 }

@@ -1,8 +1,8 @@
 import { CaveFloor, type CaveBg, type Personality } from '@/models/dictModels'
 import { onMounted, ref } from 'vue'
-import { personalityJson } from '../../dict/personalitydict'
-import { cavebgJson } from '../../dict/cavebgdict'
-import { cavefloorJson } from '../../dict/cavefloordict'
+import { personalityJson } from '@pspe/dict/personalitydict'
+import { cavebgJson } from '@pspe/dict/cavebgdict'
+import { cavefloorJson } from '@pspe/dict/cavefloordict'
 import _ from 'lodash'
 export function useLoadDict() {
   const personalityList = ref<Personality[]>([])

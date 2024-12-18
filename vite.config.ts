@@ -11,7 +11,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      // '@res': fileURLToPath(new URL('./res', import.meta.url)),
+      '@pspe': fileURLToPath(new URL('./src/module/Personality-Sneak-Peek-Expanded', import.meta.url)),
     },
   },
 })

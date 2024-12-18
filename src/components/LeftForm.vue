@@ -14,8 +14,10 @@
               v-for="(item, index) in personalityList"
               :key="index"
               :value="index"
-              :label="$t(`personality.${item.name}`)"
+              :label="item.name"
               >
+              
+              <!-- :label="$t(`personality.${item.name}`)" -->
             </el-option>
           </el-select>
           <el-button type="primary" @click="handlePersonalityGtClick">&gt;</el-button>
@@ -136,20 +138,20 @@ function setPersonalityUrl() {
     default:
       if (personality.each !== undefined) {
         canvasStore.backAura = {
-          url: `./res/spine/aura_each/${personality.each}/${personality.each}`,
+          url: `res/spine/aura_each/${personality.each}/${personality.each}`,
           name: personality.back,
         }
         canvasStore.frontAura = {
-          url: `./res/spine/aura_each/${personality.each}/${personality.each}`,
+          url: `res/spine/aura_each/${personality.each}/${personality.each}`,
           name: personality.front,
         }
       } else {
         canvasStore.backAura = {
-          url: `./res/spine/aura/aura_back/aura_back`,
+          url: `res/spine/aura/aura_back/aura_back`,
           name: personality.back,
         }
         canvasStore.frontAura = {
-          url: `./res/spine/aura/aura_front/aura_front`,
+          url: `res/spine/aura/aura_front/aura_front`,
           name: personality.front,
         }
       }
@@ -159,12 +161,12 @@ function setCavebgUrl() {
   const caveBg = CaveBgList.value[formData.value.caveBg]
   if (caveBg.name === 'none') {
     canvasStore.background = {
-      url: './res/spine/aura/aura_back/aura_back',
+      url: 'res/spine/aura/aura_back/aura_back',
       name: '',
     }
   } else {
     canvasStore.background = {
-      url: `./res/spine/cavedeco/${caveBg.res}`,
+      url: `res/spine/cavedeco/${caveBg.res}`,
       name: formData.value.bgState,
     }
   }
@@ -174,12 +176,12 @@ function setCaveFloorUrl() {
   const caveFloor = CaveFloorList.value[formData.value.caveFloor]
   if (caveFloor.name === 'none') {
     canvasStore.floor = {
-      url: './res/spine/aura/aura_back/aura_back',
+      url: 'res/spine/aura/aura_back/aura_back',
       name: '',
     }
   } else {
     canvasStore.floor = {
-      url: `./res/spine/cavedeco/${caveFloor.res}`,
+      url: `res/spine/cavedeco/${caveFloor.res}`,
       name: formData.value.floorState,
     }
   }

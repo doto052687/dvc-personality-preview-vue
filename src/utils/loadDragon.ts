@@ -1,5 +1,5 @@
 import { onMounted, ref } from 'vue'
-import { speciesJson } from '../../dict/dragondict'
+import { speciesJson } from '@pspe/dict/dragondict'
 import _ from 'lodash'
 import type { Dragon } from '@/models/dictModels'
 
