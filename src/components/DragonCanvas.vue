@@ -25,7 +25,6 @@
 import { SpineObject } from '@/utils/spineObject'
 import { SpineCanvas } from '@esotericsoftware/spine-webgl'
 import { useCanvasStore } from '@/stores/canvas'
-// import { MutationType } from 'pinia'
 
 import _ from 'lodash'
 import { onMounted, ref, watch } from 'vue'
@@ -52,31 +51,6 @@ watch(() => canvasStore.$state['dragon'], _.debounce(setDragonCanvas, 1000))
 watch(() => canvasStore.$state['background'], _.debounce(setCaveBgCanvas, 1000))
 watch(() => canvasStore.$state['floor'], _.debounce(setFloorCanvas, 1000))
 watch(() => canvasStore.$state['frontAura'], _.debounce(setFrontAuraCanvas, 1000))
-// add debounce when change canvas
-// canvasStore.$subscribe(
-//   _.debounce((mutation, state) => {
-//     console.log(mutation)
-//     const event = mutation.events as any
-//     switch (event.key) {
-//       case 'backAura':
-//       case 'frontAura':
-//         setBackAuraCanvas()
-//         setFrontAuraCanvas()
-//         break
-//       case 'background':
-//         setCaveBgCanvas()
-//         break
-//       case 'dragon':
-//         setDragonCanvas()
-//         break
-//       case 'floor':
-//         setFloorCanvas()
-//         break
-//       default:
-//         break
-//     }
-//   }, 500),
-// )
 
 function setInitialDragonCanvas() {
   const dragonCanvasElem = document.getElementById('dragonCanvas') as HTMLCanvasElement
@@ -94,13 +68,16 @@ function setCaveBgCanvas() {
     app: new SpineObject(baseResPath + canvasStore.background.url, canvasStore.background.name),
   })
 }
+
 function setBackAuraCanvas() {
+  console.log('setBackAuraCanvas')
   canvases.value.backAura?.dispose()
   const canvasElem = document.getElementById('Auraback') as HTMLCanvasElement
   canvases.value.backAura = new SpineCanvas(canvasElem, {
     app: new SpineObject(baseResPath + canvasStore.backAura.url, canvasStore.backAura.name),
   })
 }
+
 function setFrontAuraCanvas() {
   canvases.value.frontAura?.dispose()
   const canvasElem = document.getElementById('Aurafront') as HTMLCanvasElement
@@ -108,6 +85,7 @@ function setFrontAuraCanvas() {
     app: new SpineObject(baseResPath + canvasStore.frontAura.url, canvasStore.frontAura.name),
   })
 }
+
 function setFloorCanvas() {
   canvases.value.floor?.dispose()
   const canvasElem = document.getElementById('Floor') as HTMLCanvasElement

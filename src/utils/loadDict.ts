@@ -16,13 +16,16 @@ export function useLoadDict() {
   })
 
   function setPersonalityList() {
-    personalityList.value = _.map(personalityJson, (value:any, key) => ({
+    personalityList.value = _.chain(personalityJson)
+    .map((value: any, key) => ({
       name: key,
       back: value.back,
       front: value.front,
       each: value.each,
     }))
-  }
+    .filter(item => !item.name.includes('(') && !item.name.includes('['))
+    .value();
+    }
 
   function setCaveBgList() {
     CaveBgList.value = _.map(cavebgJson, (value:any, key) => ({

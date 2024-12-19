@@ -5,9 +5,9 @@
         <div class="select-container">
           <el-button type="primary" @click="handlePersonalityLtClick">&lt;</el-button>
           <el-select
+            filterable
             v-model="formData.personality"
             class="select-width"
-            placeholder=""
             @change="setPersonalityUrl"
           >
             <el-option
@@ -22,6 +22,82 @@
           <el-button type="primary" @click="handlePersonalityGtClick">&gt;</el-button>
         </div>
       </el-form-item>
+      <div v-if="personalityName == 'My Heart'">
+        <el-form-item label="Front">
+          <el-select v-model="formData.myHeartFrontType" @change="setPersonalityUrl">
+            <el-option
+              v-for="(item, index) in MyHeartList.front"
+              :key="item.name"
+              :label="item.name"
+              :value="index"
+            ></el-option>
+          </el-select>
+          <el-select v-model="formData.myHeartFrontColor" @change="setPersonalityUrl">
+            <el-option
+              v-for="item in MyHeartList.front[formData.myHeartFrontType].color"
+              :key="item.name"
+              :label="item.name"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Back">
+          <el-select v-model="formData.myHeartBackType" @change="setPersonalityUrl">
+            <el-option
+              v-for="(item, index) in MyHeartList.back"
+              :key="item.name"
+              :label="item.name"
+              :value="index"
+            ></el-option>
+          </el-select>
+          <el-select v-model="formData.myHeartBackColor" @change="setPersonalityUrl">
+            <el-option
+              v-for="item in MyHeartList.back[formData.myHeartBackType].color"
+              :key="item.name"
+              :label="item.name"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+      <div v-if="personalityName == 'My Own'">
+        <el-form-item label="Front" class="select-container">
+          <el-select v-model="formData.myOwnFrontType">
+            <el-option
+              v-for="(item, index) in MyOwnList.front"
+              :key="item.name"
+              :label="item.name"
+              :value="index"
+            ></el-option>
+          </el-select>
+          <el-select v-model="formData.myOwnFrontColor">
+            <el-option
+              v-for="item in MyOwnList.front[formData.myOwnFrontType].color"
+              :key="item.name"
+              :label="item.name"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Back" class="select-container">
+          <el-select v-model="formData.myOwnBackType">
+            <el-option
+              v-for="(item, index) in MyOwnList.back"
+              :key="item.name"
+              :label="item.name"
+              :value="index"
+            ></el-option>
+          </el-select>
+          <el-select v-model="formData.myOwnBackColor">
+            <el-option
+              v-for="item in MyOwnList.back[formData.myOwnBackType].color"
+              :key="item.name"
+              :label="item.name"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+      </div>
       <el-form-item>
         <div class="select-container">
           <el-button type="primary" @click="handleBackgroundLtClick">&lt;</el-button>
@@ -87,12 +163,19 @@
 <script setup lang="ts">
 import { LeftForm } from '@/models/formModels'
 import { useLoadDict } from '@/utils/loadDict'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useCanvasStore } from '@/stores/canvas'
+import { useLoadSpecialPersonality } from '@/utils/loadSpecialPersionality'
 
 const { personalityList, CaveBgList, CaveFloorList } = useLoadDict()
 const formData = ref<LeftForm>(new LeftForm())
 const canvasStore = useCanvasStore()
+const { MyHeartList, MyOwnList } = useLoadSpecialPersonality()
+
+const personalityName = computed(() => {
+  if (personalityList.value.length === 0) return ''
+  return personalityList.value[formData.value.personality].name
+})
 
 function handlePersonalityLtClick() {
   formData.value.personality--
@@ -128,11 +211,24 @@ function setPersonalityUrl() {
   const personality = personalityList.value[formData.value.personality]
   switch (personality.name) {
     case 'My Heart':
+      canvasStore.backAura = {
+        url: 'res/spine/aura_each/aura_blissfull/aura_blissfull',
+        name: formData.value.myHeartBackColor,
+      }
+      canvasStore.frontAura = {
+        url: 'res/spine/aura_each/aura_blissfull/aura_blissfull',
+        name: formData.value.myHeartFrontColor,
+      }
+      break
     case 'My Own':
-      canvasStore.backAura.url = ''
-      canvasStore.backAura.name = ''
-      canvasStore.frontAura.url = ''
-      canvasStore.frontAura.name = ''
+      canvasStore.backAura = {
+        url: 'res/spine/aura_each/aura_myheart/aura_myheart',
+        name: formData.value.myOwnBackColor,
+      }
+      canvasStore.frontAura = {
+        url: 'res/spine/aura_each/aura_myheart/aura_myheart',
+        name: formData.value.myOwnFrontColor,
+      }
       break
     default:
       if (personality.each !== undefined) {
@@ -187,9 +283,20 @@ function setCaveFloorUrl() {
 }
 
 function setBgBrightness() {
-  var ele = document.getElementById('Background')
+  let ele = document.getElementById('Background')
   if (!ele) return
   ele.style.filter = `brightness(${formData.value.bgBrightness})`
+}
+
+function resetSpecialPersonalityValue() {
+  formData.value.myHeartBackColor = ''
+  formData.value.myHeartBackType = 0
+  formData.value.myHeartFrontType = 0
+  formData.value.myHeartFrontColor = ''
+  formData.value.myOwnBackColor = ''
+  formData.value.myOwnBackType = 0
+  formData.value.myOwnFrontColor = ''
+  formData.value.myOwnFrontType = 0
 }
 </script>
 

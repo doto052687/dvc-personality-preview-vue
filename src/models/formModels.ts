@@ -5,6 +5,14 @@ export class LeftForm {
   bgState: 'idle' | '' = 'idle'
   bgBrightness: 1 | 0.5 = 1
   floorState: 'idle' | '' = 'idle'
+  myHeartFrontType: number = 0
+  myHeartFrontColor: string = ''
+  myHeartBackType: number = 0
+  myHeartBackColor: string = ''
+  myOwnFrontType: number = 0
+  myOwnFrontColor: string = ''
+  myOwnBackType: number = 0
+  myOwnBackColor: string = ''
 }
 export class RightForm {
   species: number = 0

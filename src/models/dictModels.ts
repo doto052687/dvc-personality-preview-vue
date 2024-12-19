@@ -34,3 +34,11 @@ export class Stage {
   name!: string
   forms: Form[] = []
 }
+export class Color{
+  value!:string
+  name!: string
+}
+export class SpecialPersonality {
+  name!:string
+  color:Color[]=[]
+}
