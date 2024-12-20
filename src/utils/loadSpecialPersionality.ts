@@ -6,6 +6,11 @@ import { myheartbackJson } from '@pspe/dict/myheartbackdict'
 import { myheartfrontJson } from '@pspe/dict/myheartfrontdict'
 import _ from 'lodash'
 
+/**
+ * read myOwn and myHeart personality dict
+ * @returns MyHeartList:SpecialPersonality[]
+ * @returns MyOwnList:SpecialPersonality[]
+ */
 export function useLoadSpecialPersonality() {
   const MyOwnList = reactive<{ front: SpecialPersonality[]; back: SpecialPersonality[] }>({
     front: [],

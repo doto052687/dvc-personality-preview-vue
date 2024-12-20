@@ -8,5 +8,6 @@ export const useCanvasStore = defineStore({
     background: { url: '', name: '' },
     dragon: { url: '', name: '' },
     floor: { url: '', name: '' },
+    brightness: 1|0.5
   }),
 })

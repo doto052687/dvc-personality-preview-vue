@@ -3,6 +3,10 @@ import { speciesJson } from '@pspe/dict/dragondict'
 import _ from 'lodash'
 import type { Dragon } from '@/models/dictModels'
 
+/**
+ * read dragon dict
+ * @returns dragonList:Dragon[]
+ */
 export function useLoadDragon() {
   const dragonList = ref<Dragon[]>([])
 
