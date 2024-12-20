@@ -9,6 +9,9 @@ import {
   type SpineCanvasApp,
 } from '@esotericsoftware/spine-webgl'
 
+/**
+ * see @pspe/js/spineOject.js
+ */
 export class SpineObject implements SpineCanvasApp {
   skeleton: null | Skeleton
   animationState: null | AnimationState
@@ -100,10 +103,5 @@ export class SpineObject implements SpineCanvasApp {
     } else {
       this.skeletonScale = 0.7
     }
-
-    // console.log(navigator.userAgent)
-    // console.log(window.devicePixelRatio)
-    // console.log(window.innerWidth)
-    // console.log(this.skeletonScale)
   }
 }

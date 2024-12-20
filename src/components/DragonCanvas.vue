@@ -14,7 +14,11 @@
         <canvas id="dragonCanvas" class="spineCanvas dragonCanvas"></canvas>
         <canvas id="Auraback" class="spineCanvas auraBackCanvas"></canvas>
         <canvas id="Aurafront" class="spineCanvas auraFrontCanvas"></canvas>
-        <canvas id="Background" class="spineCanvas backgroundCanvas"></canvas>
+        <canvas
+          id="Background"
+          class="spineCanvas backgroundCanvas"
+          :style="{ '--brightness': canvasStore.brightness }"
+        ></canvas>
         <canvas id="Floor" class="spineCanvas floorCanvas"></canvas>
       </div>
     </div>
@@ -43,15 +47,22 @@ const canvases = ref<{
   background: null,
   floor: null,
 })
+
 onMounted(() => {
   setInitialDragonCanvas()
 })
-watch(() => canvasStore.$state['backAura'], _.debounce(setBackAuraCanvas, 1000))
-watch(() => canvasStore.$state['dragon'], _.debounce(setDragonCanvas, 1000))
-watch(() => canvasStore.$state['background'], _.debounce(setCaveBgCanvas, 1000))
-watch(() => canvasStore.$state['floor'], _.debounce(setFloorCanvas, 1000))
-watch(() => canvasStore.$state['frontAura'], _.debounce(setFrontAuraCanvas, 1000))
 
+// watch canvas url store in pinia then update the canvas element
+// add throttle to prevent user click > button too fast
+watch(() => canvasStore.$state['backAura'], _.throttle(setBackAuraCanvas, 1000))
+watch(() => canvasStore.$state['dragon'], _.throttle(setDragonCanvas, 1000))
+watch(() => canvasStore.$state['background'], _.throttle(setCaveBgCanvas, 1000))
+watch(() => canvasStore.$state['floor'], _.throttle(setFloorCanvas, 1000))
+watch(() => canvasStore.$state['frontAura'], _.throttle(setFrontAuraCanvas, 1000))
+
+/**
+ * load dummy dragon after component mounted
+ */
 function setInitialDragonCanvas() {
   const dragonCanvasElem = document.getElementById('dragonCanvas') as HTMLCanvasElement
   const url =
@@ -102,5 +113,9 @@ function setDragonCanvas() {
   })
 }
 </script>
-
-<style scoped></style>
+<style lang="css" scoped>
+.backgroundCanvas {
+  filter: brightness(var(--brightness));
+  transition: filter 0.3s ease; /* 平滑過渡效果 */
+}
+</style>

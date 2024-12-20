@@ -1,6 +1,15 @@
 <template>
   <div class="left-container">
     <el-form ref="form" :model="formData">
+      <!-- language -->
+      <el-form-item label="Language">
+        <el-select v-model="locale">
+          <el-option value="en-US" label="English"> </el-option>
+          <el-option value="zh-TW" label="正體中文"> </el-option>
+          <el-option value="ko-KR" label="한국어"> </el-option>
+        </el-select>
+      </el-form-item>
+      <!-- personality -->
       <el-form-item>
         <div class="select-container">
           <el-button type="primary" @click="handlePersonalityLtClick">&lt;</el-button>
@@ -16,12 +25,12 @@
               :value="index"
               :label="$t(`personality.${item.name}`)"
             >
-              <!-- :label="item.name" -->
             </el-option>
           </el-select>
           <el-button type="primary" @click="handlePersonalityGtClick">&gt;</el-button>
         </div>
       </el-form-item>
+      <!-- special personality:My heart detail setting(color and type) -->
       <div v-if="personalityName == 'My Heart'">
         <el-form-item label="Front">
           <el-select v-model="formData.myHeartFrontType" @change="setPersonalityUrl">
@@ -60,6 +69,7 @@
           </el-select>
         </el-form-item>
       </div>
+      <!-- special personality:My Own detail setting(color and type) -->
       <div v-if="personalityName == 'My Own'">
         <el-form-item label="Front" class="select-container">
           <el-select v-model="formData.myOwnFrontType">
@@ -98,6 +108,7 @@
           </el-select>
         </el-form-item>
       </div>
+      <!-- cave background -->
       <el-form-item>
         <div class="select-container">
           <el-button type="primary" @click="handleBackgroundLtClick">&lt;</el-button>
@@ -118,18 +129,21 @@
           <el-button type="primary" @click="handleBackgroundGtClick">&gt;</el-button>
         </div>
       </el-form-item>
+      <!-- background animation state -->
       <el-form-item>
         <el-radio-group v-model="formData.bgState" @change="setCavebgUrl">
           <el-radio value="idle">idle</el-radio>
           <el-radio value="">stop</el-radio>
         </el-radio-group>
       </el-form-item>
+      <!-- background brightness -->
       <el-form-item>
         <el-radio-group v-model="formData.bgBrightness" @change="setBgBrightness">
           <el-radio :value="1">bright</el-radio>
           <el-radio :value="0.5">dark</el-radio>
         </el-radio-group>
       </el-form-item>
+      <!-- cave floor -->
       <el-form-item>
         <div class="select-container">
           <el-button type="primary" @click="handleFloorLtClick">&lt;</el-button>
@@ -150,6 +164,7 @@
           <el-button type="primary" @click="handleFloorRtClick">&gt;</el-button>
         </div>
       </el-form-item>
+      <!-- floor animation state -->
       <el-form-item>
         <el-radio-group v-model="formData.floorState" @change="setCaveFloorUrl">
           <el-radio value="idle">idle</el-radio>
@@ -166,16 +181,16 @@ import { useLoadDict } from '@/utils/loadDict'
 import { computed, ref } from 'vue'
 import { useCanvasStore } from '@/stores/canvas'
 import { useLoadSpecialPersonality } from '@/utils/loadSpecialPersionality'
-
+import i18n from '@/locales'
 const { personalityList, CaveBgList, CaveFloorList } = useLoadDict()
 const formData = ref<LeftForm>(new LeftForm())
 const canvasStore = useCanvasStore()
 const { MyHeartList, MyOwnList } = useLoadSpecialPersonality()
-
 const personalityName = computed(() => {
   if (personalityList.value.length === 0) return ''
   return personalityList.value[formData.value.personality].name
 })
+const { locale } = i18n.global
 
 function handlePersonalityLtClick() {
   formData.value.personality--
@@ -207,7 +222,11 @@ function handleFloorRtClick() {
   setCaveFloorUrl()
 }
 
+/**
+ * set aura resource url
+ */
 function setPersonalityUrl() {
+  // MyHeart and MyOwn use both type and color to get correct resource
   const personality = personalityList.value[formData.value.personality]
   switch (personality.name) {
     case 'My Heart':
@@ -231,6 +250,7 @@ function setPersonalityUrl() {
       }
       break
     default:
+      // check wether the personality has each property
       if (personality.each !== undefined) {
         canvasStore.backAura = {
           url: `res/spine/aura_each/${personality.each}/${personality.each}`,
@@ -252,6 +272,7 @@ function setPersonalityUrl() {
       }
   }
 }
+
 function setCavebgUrl() {
   const caveBg = CaveBgList.value[formData.value.caveBg]
   if (caveBg.name === 'none') {
@@ -283,20 +304,7 @@ function setCaveFloorUrl() {
 }
 
 function setBgBrightness() {
-  let ele = document.getElementById('Background')
-  if (!ele) return
-  ele.style.filter = `brightness(${formData.value.bgBrightness})`
-}
-
-function resetSpecialPersonalityValue() {
-  formData.value.myHeartBackColor = ''
-  formData.value.myHeartBackType = 0
-  formData.value.myHeartFrontType = 0
-  formData.value.myHeartFrontColor = ''
-  formData.value.myOwnBackColor = ''
-  formData.value.myOwnBackType = 0
-  formData.value.myOwnFrontColor = ''
-  formData.value.myOwnFrontType = 0
+  canvasStore.brightness = formData.value.bgBrightness
 }
 </script>
 

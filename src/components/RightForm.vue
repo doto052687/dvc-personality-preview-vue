@@ -1,6 +1,7 @@
 <template>
   <div class="right-container">
     <el-form ref="form" :model="formData" style="min-width: 250px">
+      <!-- species -->
       <el-form-item prop="species">
         <div style="display: inline-flex; gap: 0.25rem; flex-grow: 1">
           <el-button type="primary" @click="handleDragonLtClick">&lt;</el-button>
@@ -10,8 +11,7 @@
               :key="index"
               :value="index"
               :label="$t(`dragon.${dragon.speciesDisplay}`)"
-              />
-              <!-- :label="dragon.speciesDisplay" -->
+            />
           </el-select>
           <el-button type="primary" @click="handleDragonGtClick">&gt;</el-button>
         </div>
@@ -26,6 +26,7 @@
           />
         </el-select>
       </el-form-item>
+      <!-- gender -->
       <el-form-item prop="genders">
         <el-radio-group v-model="formData.genders">
           <el-radio v-for="(item, index) in genderList" :key="index" :value="index">
@@ -48,6 +49,7 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
+      <!-- stage -->
       <el-form-item prop="stage">
         <el-radio-group v-model="formData.stage" style="margin-top: 10px">
           <el-radio v-for="(item, index) in stageList" :key="index" :value="index">
@@ -75,6 +77,7 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
+      <!-- animation -->
       <el-form-item prop="animation">
         <el-radio-group v-model="formData.animation" class="animation-radios">
           <el-radio value="idle">Idle</el-radio>
@@ -94,6 +97,7 @@ import { RightForm } from '@/models/formModels'
 import { computed, ref, watch } from 'vue'
 import type { Form, Gender, Stage } from '@/models/dictModels'
 import { useCanvasStore } from '@/stores/canvas'
+import _ from 'lodash'
 
 const canvasStore = useCanvasStore()
 const lastSpecies = ref<number>(0)
@@ -118,6 +122,9 @@ const stageList = computed<Stage[]>(() => {
   else return []
 })
 
+/**
+ * when dragon species be changed，change other property to default value
+ */
 watch(
   formData,
   (newVal) => {
@@ -133,13 +140,18 @@ watch(
 function resetForm() {
   formData.value.forms = 0
   formData.value.genders = 0
-  formData.value.stage = 0
+  // set default stage to adult(if no adult found，set value to 0)
+  const adultStage = _.findIndex(stageList.value, { name: 'adult' })
+  formData.value.stage = adultStage == -1 ? 0 : adultStage
   formData.value.animation = 'idle'
 }
 
 function setDragonUrl() {
   let url
-  const stageName = dragonList.value[formData.value.species].stage[formData.value.stage].name
+  const stageName =
+    dragonList.value[formData.value.species].stage[formData.value.stage].forms[formData.value.forms]
+      .name
+  console.log(stageName)
   switch (stageName) {
     case 'undead':
       url = getUndeadUrl()
@@ -168,6 +180,7 @@ function getEssenceUrl() {
 
 function getUndeadUrl() {
   const undeadres = genderList.value[formData.value.genders].undeadres
+  console.log(undeadres)
 
   return `res/spine/character/dragon/undead/undead_${undeadres}/undead_${undeadres}`
 }

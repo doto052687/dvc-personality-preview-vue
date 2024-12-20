@@ -4,6 +4,13 @@ import { personalityJson } from '@pspe/dict/personalitydict'
 import { cavebgJson } from '@pspe/dict/cavebgdict'
 import { cavefloorJson } from '@pspe/dict/cavefloordict'
 import _ from 'lodash'
+
+/**
+ * read personality, background and floor dic
+ * @returns personalityList:Personality[]
+ * @returns CaveBgList:CaveBg[]
+ * @returns CaveFloorList:CaveFloor[]
+ */
 export function useLoadDict() {
   const personalityList = ref<Personality[]>([])
   const CaveBgList = ref<CaveBg[]>([])
@@ -23,7 +30,7 @@ export function useLoadDict() {
       front: value.front,
       each: value.each,
     }))
-    .filter(item => !item.name.includes('(') && !item.name.includes('['))
+    .filter(item => !item.name.includes('_') && !item.name.includes('['))
     .value();
     }
 
